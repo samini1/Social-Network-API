@@ -10,15 +10,15 @@ const {
 //get all and post user routes
 router
     .route('/')    
-    .get()
-    .post
+    .get(getAllUser)
+    .post(createUser);
 
 //get by id, put, delete
 router
     .route('/:id')
-    .get()    
-    .put()
-    .delete()
+    .get(getUserById)    
+    .put(updateUser)
+    .delete(deleteUser);
 
 //bonus remobe user's associated thoughts
 

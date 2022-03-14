@@ -7,18 +7,17 @@ const {
     deleteThought
 } = require('../../controllers/thought-controller')
 
-//all route
+//all route and post
 
 router
-    .get()
-
+    .get(getAllThought)
+    .post(createThought);
 //thought by id
 
 router
-    .get()
-    .post()
-    .put()
-    .delete()
+    .get(getThoughtById)
+    .put(updateThought)
+    .delete(deleteThought);
 
 //reactions
 
