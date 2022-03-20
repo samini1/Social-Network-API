@@ -1,5 +1,5 @@
 const res = require('express/lib/response');
-const { Thought } = require('../models');
+const { Thought, User } = require('../models');
 
 const thoughtController = {
     getAllThought(req, res) {
@@ -30,7 +30,20 @@ const thoughtController = {
      //create thought
      createThought({ body }, res) {
         Thought.create(body)
-        .then(dbThoughtData => res.json(dbThoughtData))
+        .then(({_id}) => {
+            return User.findOneAndUpdate(
+                {_id: body.userId},
+                { $push: { thought: _id} },
+                { new: true }
+            );
+        })
+        .then(dbThoughtData => {
+            if (!dbThoughtData) {
+                res.status(404).json({ message: 'No thought found at this id'});
+                return;
+            }
+            res.json(dbThoughtData)
+        })
         .catch(err => res.status(400).json(err));
     },
     //update Thought
