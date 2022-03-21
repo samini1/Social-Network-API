@@ -28,11 +28,11 @@ const thoughtController = {
         }); 
     },
      //create thought
-     createThought({ body }, res) {
+     createThought({ params, body }, res) {
         Thought.create(body)
-        .then(({_id}) => {
+        .then(({ _id }) => {
             return User.findOneAndUpdate(
-                {_id: body.userId},
+                { username: body.username },
                 { $push: { thought: _id} },
                 { new: true }
             );
@@ -42,7 +42,7 @@ const thoughtController = {
                 res.status(404).json({ message: 'No thought found at this id'});
                 return;
             }
-            res.json(dbThoughtData)
+            res.json(dbThoughtData);
         })
         .catch(err => res.status(400).json(err));
     },
@@ -66,8 +66,9 @@ const thoughtController = {
                 res.status(404).json({ message: 'No Thought found with this id'});
                 return;
             }
+            res.json(dbThoughtData);
             return User.findOneAndUpdate(
-                {_id: params.userId },
+                { _id: params.userId },
                 { $pull: {thoughts: params.Id }},
                 { new:true }
             )            
