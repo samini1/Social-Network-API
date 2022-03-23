@@ -61,10 +61,11 @@ const userController = {
     },
     createFriend({ params }, res) {
         User.findOneAndUpdate(
-            { _id: params.userId},
-            { $push: { friends: params.id } },
+            { _id: params.id},
+            { $push: { friends: params.friendId } },
             { new: true }
         )
+        .populate({ path: 'friends', select: ('-__v')})
         .then (dbUserData => {
             if (!dbUserData) {
                 res.status (404).json({ message: 'No User found at id'});
@@ -76,10 +77,11 @@ const userController = {
     },
     removeFriend({ params }, res) {
         User.findOneAndUpdate(
-          { _id: params.userId },
-          { $pull: { friends: params.id } },
+          { _id: params.id },
+          { $pull: { friends: params.friendId } },
           { new: true }
         )
+        .populate({ path: 'friends', select: ('-__v')})
           .then(dbUserData => res.json(dbUserData))
           .catch(err => res.json(err));
       }
