@@ -88,6 +88,7 @@ const thoughtController = {
             { $push: { reactions: body } },
             { new: true }
         )
+        .populate({ path: 'reactions', select: ('-__v')})
         .then (dbThoughtData => {
             if (!dbThoughtData) {
                 res.status (404).json({ message: 'No thought found at id'});
@@ -103,6 +104,7 @@ const thoughtController = {
           { $pull: { reactions: { reactionId: params.reactionId } } },
           { new: true }
         )
+        .populate({ path: 'reactions', select: ('-__v')})
           .then(dbThoughtData => res.json(dbThoughtData))
           .catch(err => res.json(err));
       }
